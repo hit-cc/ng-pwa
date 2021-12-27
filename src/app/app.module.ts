@@ -10,7 +10,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { UserModule } from './modules/user/user.module';
 
-
 @NgModule({
   declarations: [
     AppComponent,

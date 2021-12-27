@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MainService } from 'src/app/services/main.service';
-
 export interface TableElement {
   id: string;
   name: string;
@@ -11,11 +10,12 @@ export interface TableElement {
 }
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css'],
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.css']
 })
-export class UsersComponent implements OnInit {
+
+export class UserListComponent implements OnInit {
   Data: any[] = [];
   col: string[] = ['id', 'name', 'email', 'website'];
   dataSource = new MatTableDataSource<TableElement>(this.Data);
@@ -32,4 +32,5 @@ export class UsersComponent implements OnInit {
       }, 0);
     });
   }
+
 }
