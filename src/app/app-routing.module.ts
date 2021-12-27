@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { UsersComponent } from './components/users/users.component';
 
 const appRoutes: Routes = [
   {
-    path: 'users',
-    component:UsersComponent
-    // loadChildren:()=> import('./modules/angular-material').then((m)=>m.AngularMaterialModule)
-  }
+    path: '',
+    loadChildren: () =>
+      import('./modules/user/user.module').then((m) => m.UserModule),
+  },
 ];
 
 @NgModule({

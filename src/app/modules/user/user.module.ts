@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { UserRoutingModule } from './user-routing.module';
+import { UsersComponent } from 'src/app/components/users/users.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { UsersComponent } from 'src/app/components/users/users.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
 
 @NgModule({
   declarations: [
@@ -14,11 +13,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   imports: [
     CommonModule,
+    UserRoutingModule,
     MatTableModule,
     MatPaginatorModule,
     MatToolbarModule,
-    BrowserAnimationsModule
-    
   ],
   exports:[
     MatTableModule,
@@ -26,4 +24,4 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatToolbarModule,
   ]
 })
-export class AngularMaterialModule { }
+export class UserModule { }
