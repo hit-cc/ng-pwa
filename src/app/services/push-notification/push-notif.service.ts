@@ -12,7 +12,7 @@ export class PushNotifService {
     private angularFireMessaging: AngularFireMessaging,
   ) {
     this.angularFireMessaging.messages.subscribe((_msges: any) => {
-      _msges.onMessage - _msges.onMessage.bind(_msges);
+      _msges.onMessage = _msges.onMessage.bind(_msges);
       _msges.onTokenRefresh = _msges.onTokenRefresh.bind(_msges);
     });
 
