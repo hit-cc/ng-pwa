@@ -61,3 +61,8 @@ We can create a script to shorten this process. Open a terminal and run npm run 
 create a prod build using ng build --prod and then deploy that distribution on the cloud.
 
 
+
+
+## Push Notification - 28/12/2021
+
+reference link -  https://medium.com/mighty-ghost-hack/angular-8-firebase-cloud-messaging-push-notifications-cc80d9b36f82
