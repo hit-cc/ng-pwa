@@ -3,6 +3,9 @@ import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { SwUpdate } from '@angular/service-worker';
 import { MainService } from './services/main.service';
 import { PushNotifService } from './services/push-notification/push-notif.service';
+import { getMessaging, getToken } from "firebase/messaging";
+import { environment } from 'src/environments/environment.prod';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -36,6 +39,9 @@ export class AppComponent implements OnInit {
     this.pushNotifService.requestPermission();
     this.pushNotifService.receiveMessage();
     this.message = this.pushNotifService.currentMessage;
+    // this.pushNotifService.deleteToken()
+    // this.pushNotifService.sendMultipleMesg()
+    
   }
 
 }

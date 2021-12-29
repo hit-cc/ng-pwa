@@ -1,0 +1,32 @@
+<div class="card-container">
+  <a class="card">
+    <div class="col-md-12">
+      <form [formGroup]="loginForm">
+        <input
+          type="text"
+          class="form-control mb-2"
+          placeholder="Email"
+          formControlName="email"
+          required
+          autofocus
+          autocomplete="off"
+        />
+        <input
+          type="password"
+          class="form-control mb-2"
+          placeholder="Password"
+          required
+          formControlName="password"
+          autocomplete="off"
+        />
+        <div>
+          <button mat-button color="accent" class="mb-1"(click)="onSubmitLoginForm()" >
+            Login
+          </button>
+          &nbsp;
+          <button mat-button color="primary"  [routerLink]="['/register']">Register</button>
+        </div>
+      </form>
+    </div>
+  </a>
+</div>
