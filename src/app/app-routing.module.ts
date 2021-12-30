@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './services/auth-guard/auth.guard';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -28,6 +29,14 @@ const appRoutes: Routes = [
         (m) => m.ProductsModule
       ),
     canActivate: [AuthGuard],
+  },
+  {
+    path: '404',
+    component: ErrorPageComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '404',
   },
 ];
 

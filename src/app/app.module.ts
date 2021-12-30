@@ -26,9 +26,10 @@ import { RegisterComponent } from './components/register/register.component';
 
 
 //angular material module
-import {MaterialModule} from './modules/angular-material-module'
+import {MaterialModule} from './modules/angular-material-module';
+import { ErrorPageComponent } from './components/error-page/error-page.component'
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, RegisterComponent],
+  declarations: [AppComponent, HomeComponent, LoginComponent, RegisterComponent, ErrorPageComponent],
   imports: [
     BrowserModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
