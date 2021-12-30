@@ -8,11 +8,11 @@ import { FireAuthService } from 'src/app/services/firebase-auth/fire-auth.servic
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  constructor(private fireServcie: FireAuthService, private router: Router) {}
+  constructor(private fireService: FireAuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   logout() {
-    this.fireServcie.logout();
+    this.fireService.logout();
   }
 }

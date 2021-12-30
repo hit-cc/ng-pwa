@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { BehaviorSubject, mergeMap } from 'rxjs';
-import { getMessaging, getToken } from 'firebase/messaging';
-import { environment } from 'src/environments/environment';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FireAuthService } from '../firebase-auth/fire-auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +14,8 @@ export class PushNotifService {
   constructor(
     private angularFireMessaging: AngularFireMessaging,
     public afStorage: AngularFirestore,
-    private firAuthService:FireAuthService
+    private firAuthService: FireAuthService,
+    private _snackBar: MatSnackBar
   ) {
     this.angularFireMessaging.messages.subscribe((_msges: any) => {
       _msges.onMessage = _msges.onMessage.bind(_msges);
@@ -23,31 +23,44 @@ export class PushNotifService {
     });
   }
 
+  /**
+   * This method check firebase permission
+   * if permission granted then request for device token
+   * else throw error
+   */
   requestPermission() {
-    this.angularFireMessaging.requestToken.subscribe(
-      (token:any) => {
-        console.log('token', token);
-        this.firAuthService.getDeviceToken(token)
-        this.sendMultipleMesg();
-      },
-      (err) => {
-        console.error('Unable to get permission to notify.', err);
-      }
-    );
-  }
-
-  checkPermission() {
     this.angularFireMessaging.requestPermission.subscribe(
       () => {
         console.log('Permission granted!');
+        this.requestDeviceToken();
       },
       (error) => {
         console.log('Permission Denied!');
-        console.error(error);
+        this._snackBar.open(error.message, 'close');
       }
     );
   }
 
+  /**
+   * request for Device token to firebase if permission granted
+   * pass device token with getDeviceToken method
+   */
+  requestDeviceToken() {
+    this.angularFireMessaging.requestToken.subscribe(
+      (token: any) => {
+        console.log('Device_Token', token);
+        this.firAuthService.getDeviceToken(token);
+      },
+      (err) => {
+        console.error('Permission denied to get device token..!');
+        this._snackBar.open(err.message, 'close');
+      }
+    );
+  }
+
+  /**
+   * get notification response here
+   */
   receiveMessage() {
     this.angularFireMessaging.messages.subscribe((payload: any) => {
       console.log('new message received. ', payload);
@@ -56,35 +69,19 @@ export class PushNotifService {
     });
   }
 
-  deleteToken() {
-    this.angularFireMessaging.getToken
-      // .pipe(mergeMap((token) => this.angularFireMessaging.deleteToken(token)))
-      .subscribe((token) => {
-        console.log('Token listsss:::-', token);
-      });
-  }
+  // deleteToken() {
+  //   this.angularFireMessaging.getToken
+  //     .pipe(mergeMap((token:any) => this.angularFireMessaging.deleteToken(token)))
+  //     .subscribe((token) => {
+  //       console.log('Token listsss:::-', token);
+  //     });
+  // }
 
-  sendMultipleMesg() {
-    const messaging = getMessaging();
-    getToken(messaging, { vapidKey: environment.PUBLIC_VAPID_KEY })
-      .then((currentToken) => {
-        if (currentToken) {
-          // Send the token to your server and update the UI if necessary
-          // ...
-          console.log('currentToken::::::::::::::::::', currentToken);
-        } else {
-          // Show permission request UI
-          console.log(
-            'No registration token available. Request permission to generate one.'
-          );
-        }
-      })
-      .catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-        // ...
-      });
-  }
-
+  /**
+   * @param payload
+   * this method set custome body,icon,bagde to notification
+   *  also we can add redirecton link to redirect specific url on click notification
+   */
   showCustomeNotification(payload: any) {
     let notify_data = payload['notification'];
     let title = notify_data['title'];
@@ -94,7 +91,6 @@ export class PushNotifService {
       badge: './assets/icons/icon-128x128.png',
       image: './assets/icons/icon-128x128.png',
     };
-    console.log('new Message ::-', notify_data);
     let notify: Notification = new Notification(title, option);
 
     notify.onclick = (event) => {
@@ -102,16 +98,27 @@ export class PushNotifService {
     };
   }
 
-  saveTokens(user: any, token: string) {
-    console.log('user::-', user);
-    
-    const currentTokens = user.fcmTokens || { }
-    console.log('token---------', token);
-    // If token does not exist in firestore, update db
-    if (!currentTokens[token]) {
-      const userRef = this.afStorage.collection('device_token').doc(user.uid);
-      const tokens = { ...currentTokens, [token]: true };
-      userRef.update({ fcmTokens: tokens });
-    }
+
+  setBackgroundMessageHandler(){
+
+    // messaging.setBackgroundMessageHandler(function (payload) {
+    //   console.log("setBackgroundMessageHandler background message ", payload);
+  
+    //   const promiseChain = clients
+    //     .matchAll({
+    //       type: "window",
+    //       includeUncontrolled: true,
+    //     })
+    //     .then((windowClients) => {
+    //       for (let i = 0; i < windowClients.length; i++) {
+    //         const windowClient = windowClients[i];
+    //         windowClient.postMessage(payload);
+    //       }
+    //     })
+    //     .then(() => {
+    //       return self.registration.showNotification("my notification title");
+    //     });
+    //   return promiseChain;
+    // });
   }
 }

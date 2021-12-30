@@ -26,9 +26,7 @@ import { RegisterComponent } from './components/register/register.component';
 
 
 //angular material module
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MaterialModule} from './modules/angular-material-module'
 @NgModule({
   declarations: [AppComponent, HomeComponent, LoginComponent, RegisterComponent],
   imports: [
@@ -50,10 +48,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AngularFirestoreModule,
     AngularFireStorageModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatSnackBarModule
-    
+    // angular material
+    MaterialModule // all module imported 
   ],
   providers: [PushNotifService, AsyncPipe],
   bootstrap: [AppComponent],

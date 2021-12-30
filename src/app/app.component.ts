@@ -35,12 +35,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // this.getLocation();
-    this.pushNotifService.checkPermission()
-    this.pushNotifService.requestPermission();
+    this.pushNotifService.requestPermission()
     this.pushNotifService.receiveMessage();
     this.message = this.pushNotifService.currentMessage;
-    // this.pushNotifService.deleteToken()
-    // this.pushNotifService.sendMultipleMesg()
+    
     
   }
 

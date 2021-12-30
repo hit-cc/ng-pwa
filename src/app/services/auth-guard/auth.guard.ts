@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { FireAuthService } from './firebase-auth/fire-auth.service';
+import { FireAuthService } from '../firebase-auth/fire-auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +15,9 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       var isAuthenticated = this.fireAuthService.isLoggedIn;
       if (!isAuthenticated) {
-          this.router.navigate(['/login']);
+          this.router.navigate(['login']);
       }
-      return isAuthenticated;
+      return true;
   }
   
 }

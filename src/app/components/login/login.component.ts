@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loginForm.reset();
     if (this.fireAuthService.isLoggedIn) {
       this.router.navigate(['home']);
     }
@@ -41,27 +42,34 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmitLoginForm() {
-    console.log('Form Value--', this.loginForm.value);
     if (this.loginForm.valid) {
       let formDetails = this.loginForm.value;
-      this.fireAuthService.logIn(formDetails.email, formDetails.password).then(
-        (res: any) => {
-          console.log("Response::",res);
-          
-          if (res && res.operationType == 'signIn') {
-            this.ngOnInit()
-            this.fireAuthService.storeUserData(res.user);
-            this._snackBar.open('Login Successfully !', 'close', {
-              duration: 3000,
-            });
-          }
+      this.fireAuthService.logIn(formDetails.email, formDetails.password);
+    }
+  }
+
+  forgotPassword() {
+    let email = this.loginForm.controls['email'].value;
+    if (email) {
+      this.fireAuthService.sendPasswordResetEmail(email).then(
+        () => {
+          this._snackBar.open(
+            'Reset password link sent successfully.. !',
+            'close'
+          );
         },
-        (err) => {
-          this._snackBar.open(err, 'close', {
-            duration: 3000,
-          });
-        }
+        (err) => this._snackBar.open(err.message, 'close')
+      );
+      this.loginForm.reset();
+    } else {
+      this._snackBar.open(
+        'pleae Input email and click forgot password',
+        'close'
       );
     }
+  }
+
+  loginWithGoogle() {
+    this.fireAuthService.GoogleAuth();
   }
 }

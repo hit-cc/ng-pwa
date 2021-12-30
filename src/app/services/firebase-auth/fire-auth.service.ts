@@ -1,13 +1,14 @@
 import { Injectable, NgZone } from '@angular/core';
-
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-
+import * as firebase from 'firebase/app'; 
+import 'firebase/auth';
+import { GoogleAuthProvider } from 'firebase/auth';
 export interface User {
   uid: string;
   email: string;
@@ -21,32 +22,56 @@ export interface User {
   providedIn: 'root',
 })
 export class FireAuthService {
-  userData: any;
   user: any;
   div_token: any;
   constructor(
-    public afs: AngularFirestore, // Inject Firestore service
-    public afAuth: AngularFireAuth, // Inject Firebase auth service
-    public router: Router,
-    public ngZone: NgZone
+    private afs: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    private router: Router,
+    private ngZone: NgZone,
+    private _snackBar: MatSnackBar
   ) {
-    /* Saving user data in localstorage when 
-    logged in and setting up null when logged out */
+    /**  Saving user data in localstorage when
+     *logged in and setting up null when logged out
+     */
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
+        localStorage.setItem('user', JSON.stringify(user));
+        this.router.navigate(['/home']);
       } else {
         localStorage.setItem('user', '');
       }
     });
   }
 
-  // Sign in with email/password
+  /**
+   * Login with Firebse through email & password
+   * @param email
+   * @param password
+   * @returns
+   */
   logIn(email: any, password: any) {
-    return this.afAuth.signInWithEmailAndPassword(email, password);
+    this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then((res: any) => {
+        console.log('res', res);
+        this.router.navigate(['home']);
+        localStorage.setItem('user', JSON.stringify(res.user));
+        this.storeUserData(res.user);
+        this._snackBar.open('Login Successfully !', 'close');
+      })
+      .catch((err) => {
+        this._snackBar.open(err.message, 'close');
+      });
   }
 
+  /**
+   * Register with firebase through email & password
+   * then send email for verification
+   * @param email
+   * @param password
+   * @returns result
+   */
   async register(email: string, password: string) {
     var result = await this.afAuth.createUserWithEmailAndPassword(
       email,
@@ -56,20 +81,24 @@ export class FireAuthService {
     return result;
   }
 
+  /**
+   * After register verification email send to email
+   */
   async sendEmailVerification() {
     await this.afAuth.currentUser.then(
       (user) => {
         if (user) {
           user.sendEmailVerification().then(
-            (res: any) => {
-              console.log('Send Varific Emali Res::', res);
+            () => {
+              console.log('sendEmailVerification success!, Check your email');
             },
             (error) => {
-              console.log(error);
+              console.log('sendEmailVerification fail.');
+              this._snackBar.open(error.message, 'close');
             }
           );
         } else {
-          console.log('no user found!!');
+          console.log('No user found!!');
         }
       },
       (error) => {
@@ -78,17 +107,28 @@ export class FireAuthService {
     );
   }
 
+  /**
+   * Forgot password from here
+   * @param passwordResetEmail
+   * @returns
+   */
   async sendPasswordResetEmail(passwordResetEmail: string) {
     return await this.afAuth.sendPasswordResetEmail(passwordResetEmail);
   }
 
+  /**
+   * Logout
+   */
   logout() {
-    console.log('in service');
     this.afAuth.signOut();
     localStorage.removeItem('user');
     this.router.navigate(['login']);
   }
 
+  /**
+   * check user is LogedIn or Not
+   * return true / fasle
+   */
   get isLoggedIn(): boolean {
     const user = localStorage.getItem('user');
     if (user && user !== '') {
@@ -97,9 +137,11 @@ export class FireAuthService {
     return false;
   }
 
-  /* Setting up user data when sign in with username/password, 
-  sign up with username/password and sign in with social auth  
-  provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
+  /** Setting up user data when sign in with email/password,
+   *  sign up with email/password and sign in with email/password
+   *  provider in Firestore database using AngularFirestore + AngularFirestoreDocument service
+   *  store user details with device token
+   */
   storeUserData(user: any) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
@@ -117,20 +159,56 @@ export class FireAuthService {
     });
   }
 
+  /**
+   * get current user information with this method
+   * return user information
+   */
   getCurrentUserData() {
     this.afAuth.currentUser.then(
       (data: any) => {
-        console.log('Data---', data);
+        if (data) {
+          return data;
+        }
       },
       (error) => {
-        console.log('getCurrentUser Error', error);
+        console.log('Error to get current user data', error);
+        this._snackBar.open(error.message, 'close');
       }
     );
   }
 
+  /**
+   * if geting token then set to div_token variable
+   * else set null
+   * @param token
+   */
   getDeviceToken(token: string) {
     if (token !== '') {
       this.div_token = token || null;
     }
+  }
+
+  /**
+   * LOGIN WITH GOOGLE POPUP WINDOW
+   *
+   */
+  
+  GoogleAuth() {
+    return this.AuthLogin(new GoogleAuthProvider());
+  }
+
+  // Auth logic to run auth providers
+  AuthLogin(provider:any) {
+    return this.afAuth
+      .signInWithPopup(provider)
+      .then((result) => {
+        this.router.navigate(['/home']);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        this.storeUserData(result.user);
+        this._snackBar.open('You have been successfully logged in!','close');
+      })
+      .catch((error) => {
+        this._snackBar.open(error.message,'close');
+      });
   }
 }
