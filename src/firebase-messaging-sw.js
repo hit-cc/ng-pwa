@@ -11,7 +11,7 @@ importScripts(
 
 firebase.initializeApp({
   apiKey: "AIzaSyA808C8YZo7WNsvYfaGlvKCgKdHJEu1NZc",
-  authDomain: "ng-pwa-push-notification.firebaseapp.com",
+  authDomain: "https://ng-pwa-push-notif.netlify.app",
   projectId: "ng-pwa-push-notification",
   storageBucket: "ng-pwa-push-notification.appspot.com",
   messagingSenderId: "818369049302",
