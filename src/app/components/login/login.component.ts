@@ -55,16 +55,25 @@ export class LoginComponent implements OnInit {
         () => {
           this._snackBar.open(
             'Reset password link sent successfully.. !',
-            'close'
+            'close',
+            {
+              duration: 3000,
+            }
           );
         },
-        (err) => this._snackBar.open(err.message, 'close')
+        (err) =>
+          this._snackBar.open(err.message, 'close', {
+            duration: 2000,
+          })
       );
       this.loginForm.reset();
     } else {
       this._snackBar.open(
         'pleae Input email and click forgot password',
-        'close'
+        'close',
+        {
+          duration: 3000,
+        }
       );
     }
   }

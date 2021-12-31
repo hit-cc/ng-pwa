@@ -36,7 +36,9 @@ export class PushNotifService {
       },
       (error) => {
         console.log('Permission Denied!');
-        this._snackBar.open(error.message, 'close');
+        this._snackBar.open(error.message, 'close',{
+          duration:3000
+        });
       }
     );
   }
@@ -53,7 +55,9 @@ export class PushNotifService {
       },
       (err) => {
         console.error('Permission denied to get device token..!');
-        this._snackBar.open(err.message, 'close');
+        this._snackBar.open(err.message, 'close',{
+          duration:3000
+        });
       }
     );
   }

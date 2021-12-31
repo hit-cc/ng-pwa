@@ -6,7 +6,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import * as firebase from 'firebase/app'; 
+import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import { GoogleAuthProvider } from 'firebase/auth';
 export interface User {
@@ -58,10 +58,14 @@ export class FireAuthService {
         this.router.navigate(['home']);
         localStorage.setItem('user', JSON.stringify(res.user));
         this.storeUserData(res.user);
-        this._snackBar.open('Login Successfully !', 'close');
+        this._snackBar.open('Login Successfully !', 'close', {
+          duration: 3000,
+        });
       })
       .catch((err) => {
-        this._snackBar.open(err.message, 'close');
+        this._snackBar.open(err.message, 'close', {
+          duration: 2000,
+        });
       });
   }
 
@@ -94,7 +98,9 @@ export class FireAuthService {
             },
             (error) => {
               console.log('sendEmailVerification fail.');
-              this._snackBar.open(error.message, 'close');
+              this._snackBar.open(error.message, 'close', {
+                duration: 3000,
+              });
             }
           );
         } else {
@@ -172,7 +178,9 @@ export class FireAuthService {
       },
       (error) => {
         console.log('Error to get current user data', error);
-        this._snackBar.open(error.message, 'close');
+        this._snackBar.open(error.message, 'close', {
+          duration: 3000,
+        });
       }
     );
   }
@@ -192,23 +200,27 @@ export class FireAuthService {
    * LOGIN WITH GOOGLE POPUP WINDOW
    *
    */
-  
+
   GoogleAuth() {
     return this.AuthLogin(new GoogleAuthProvider());
   }
 
   // Auth logic to run auth providers
-  AuthLogin(provider:any) {
+  AuthLogin(provider: any) {
     return this.afAuth
       .signInWithPopup(provider)
       .then((result) => {
         this.router.navigate(['/home']);
         localStorage.setItem('user', JSON.stringify(result.user));
         this.storeUserData(result.user);
-        this._snackBar.open('You have been successfully logged in!','close');
+        this._snackBar.open('You have been successfully logged in!', 'close', {
+          duration: 3000,
+        });
       })
       .catch((error) => {
-        this._snackBar.open(error.message,'close');
+        this._snackBar.open(error.message, 'close', {
+          duration: 3000,
+        });
       });
   }
 }

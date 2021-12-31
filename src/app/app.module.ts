@@ -18,18 +18,24 @@ import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
 import { PushNotifService } from './services/push-notification/push-notif.service';
 import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
 
-
 //angular material module
-import {MaterialModule} from './modules/angular-material-module';
-import { ErrorPageComponent } from './components/error-page/error-page.component'
+import { MaterialModule } from './modules/angular-material-module';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, RegisterComponent, ErrorPageComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent,
+    ErrorPageComponent,
+  ],
   imports: [
     BrowserModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -48,9 +54,11 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    AngularFireDatabaseModule,
+
     ReactiveFormsModule,
     // angular material
-    MaterialModule // all module imported 
+    MaterialModule, // all module imported
   ],
   providers: [PushNotifService, AsyncPipe],
   bootstrap: [AppComponent],
