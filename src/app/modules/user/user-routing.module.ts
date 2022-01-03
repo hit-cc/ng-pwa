@@ -5,8 +5,7 @@ import { UserDetailsComponent } from './user-details/user-details.component';
 import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'list', pathMatch: 'full' },
-  { path: 'list', component: UserListComponent },
+  { path: '', component: UserListComponent },
   { path: 'add', component: UserAddComponent },
   { path: 'details', component: UserDetailsComponent },
 ];
@@ -16,4 +15,3 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class UserRoutingModule {}
-  

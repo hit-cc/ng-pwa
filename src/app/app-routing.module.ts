@@ -8,7 +8,7 @@ import { AuthGuard } from './services/auth-guard/auth.guard';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {
@@ -36,7 +36,8 @@ const appRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '404',
+    redirectTo: '/404',
+    pathMatch:'full'
   },
 ];
 

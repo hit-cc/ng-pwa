@@ -12,22 +12,17 @@ export class ProductAddComponent implements OnInit {
   currentFileUpload: FileUpload;
   percentage: number;
 
-
-  // new 
-  error: string;
-  dragAreaClass: string;
-  draggedFiles: any;
-  
   constructor(
     private storeService: FirebaseStorageService,
     private _snakBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   /**
    * select file
-   * @param event 
+   * @param event
    */
   onFileSelected(event) {
     this.selectedFiles = event.target.files;
@@ -57,4 +52,6 @@ export class ProductAddComponent implements OnInit {
       }
     );
   }
+
+ 
 }

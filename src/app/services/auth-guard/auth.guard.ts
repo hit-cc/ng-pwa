@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
       var isAuthenticated = this.fireAuthService.isLoggedIn;
       if (!isAuthenticated) {
           this.router.navigate(['login']);
+          return false
       }
       return true;
   }

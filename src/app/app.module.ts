@@ -28,6 +28,7 @@ import { RegisterComponent } from './components/register/register.component';
 //angular material module
 import { MaterialModule } from './modules/angular-material-module';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
+import { HeaderComponent } from './components/header/header.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +36,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
     LoginComponent,
     RegisterComponent,
     ErrorPageComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

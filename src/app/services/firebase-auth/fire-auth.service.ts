@@ -28,16 +28,19 @@ export class FireAuthService {
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
     private router: Router,
-    private ngZone: NgZone,
     private _snackBar: MatSnackBar
   ) {
-    /**  Saving user data in localstorage when
-     *logged in and setting up null when logged out
-     */
+    this.checkAuthState();
+  }
+
+  /**  Saving user data in localstorage when
+   *logged in and setting up null when logged out
+   */
+  checkAuthState() {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
-        this.router.navigate(['/home']);
+        // this.router.navigate(['/home']);
       } else {
         localStorage.setItem('user', '');
       }

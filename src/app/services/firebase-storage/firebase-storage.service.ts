@@ -4,9 +4,18 @@ import {
   AngularFireDatabase,
   AngularFireList,
 } from '@angular/fire/compat/database';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { finalize, Observable } from 'rxjs';
+import {
+  onValue,
+  query,
+  ref,
+  getDatabase,
+  limitToLast,
+} from 'firebase/database';
+import { finalize, map, Observable } from 'rxjs';
 import { FileUpload } from 'src/app/models/firebase-store/storeFile.model';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,9 +27,12 @@ export class FirebaseStorageService {
   _curr_date = new Date();
   formatedDate = formatDate(this._curr_date, 'yyyy_MM_dd_HH_mm_ss', 'en-US');
   filelist = [];
+  _dbs = getDatabase();
+  _imagesList: any[] = [];
   constructor(
     private angularFireStorage: AngularFireStorage,
-    private db: AngularFireDatabase
+    private db: AngularFireDatabase,
+    private afstore: AngularFirestore
   ) {}
 
   ngOnInit(): void {}
@@ -65,20 +77,20 @@ export class FirebaseStorageService {
 
   /**
    * get number of files as per params you pass number from realtime Database
+   * number of files return as per number para pass to limitToLast
    * @param numberItems
    * @returns
    */
   getFiles(numberItems): AngularFireList<FileUpload> {
-    console.log(
-      'filesss',
-      this.db.list(this.basePath, (ref) => ref.limitToLast(numberItems))
-    );
-
     return this.db.list(this.basePath, (ref) => ref.limitToLast(numberItems));
   }
 
+  getAllFiles() {
+    return this.db.list(this.basePath, (ref) => ref);
+  }
+
   /**
-   * Delete file selected file
+   * Delete selected file
    * @param fileUpload
    */
   deleteFile(fileUpload: FileUpload): void {
@@ -107,26 +119,38 @@ export class FirebaseStorageService {
     storageRef.child(name).delete();
   }
 
-  getFileList() {
+  /**
+   * get list of images form Firebase Realtime Storage..
+   * collection naem :-  ngpwa_Images
+   * @returns
+   */
+  getAllImages() {
+    this._imagesList = [];
+    const starCountRef = ref(this._dbs, 'ngpwa_Images/');
+    this.db, 'ngpwa_Images/';
+    onValue(starCountRef, (snapshot) => {
+      this._imagesList.push(snapshot.val());
+    });
+    return this._imagesList;
+  }
+
+  /**
+   * get user list from firebase storage
+   * @returns
+   */
+  getUsers() {
+    return this.afstore.collection('users').snapshotChanges();
+  }
+
+  /**
+   * delete user through id
+   * @param userId
+   */
+  deleteUser(userId: string) {
     try {
-      const ref = this.angularFireStorage.ref(this.basePath);
-      const myurlsubscription = ref.listAll().subscribe((data) => {
-        console.log("Data::",data);
-        
-        for (let i = 0; i < data.items.length; i++) {
-          let name = data.items[i].name;
-          let key = this.angularFireStorage.ref(data.items[i].name);
-          let url = key.getDownloadURL().subscribe((data) => {
-            this.filelist.push({
-              name: name,
-              key: key,
-              url: url,
-            });
-          });
-        }
-      });
+      this.afstore.doc('users/' + userId).delete();
     } catch (error) {
-      console.log('Error', error);
+      console.log('catch error', error);
     }
   }
 }
