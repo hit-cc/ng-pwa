@@ -37,7 +37,7 @@ export class FireAuthService {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
-        this.router.navigate(['/home']);
+//         this.router.navigate(['/home']);
       } else {
         localStorage.setItem('user', '');
       }
