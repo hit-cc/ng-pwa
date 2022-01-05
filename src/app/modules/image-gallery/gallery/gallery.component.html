@@ -1,0 +1,92 @@
+<!-- <div class="row">
+  <div class="col-md-8 offset-md-2">
+    <figure class="text-center">
+      <blockquote class="blockquote">
+        <p>Image Gallery</p>
+      </blockquote>
+      <figcaption class="blockquote-footer">
+        Using angular + <cite title="Source Title">Firestore</cite>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="col-md-8 offset-md-2">
+    <div class="col-md-6">
+      <table *ngIf="imageList">
+        <tr *ngFor="let i of rowImageArray">
+          <td>
+            <div class="row" *ngIf="imageList[3 * i]">
+              <div class="img-thumbnail">
+                <a [href]="imageList[3 * i]?.imageUrl" target="blank">
+                  <img
+                    [src]="imageList[3 * i]?.imageUrl"
+                    alt="Lights"
+                    style="width: 100%"
+                  />
+                  <div class="caption">
+                    <p>{{ imageList[3 * i].caption }}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row" *ngIf="imageList[3 * i + 1]">
+              <div class="img-thumbnail">
+                <a [href]="imageList[3 * i + 1]?.imageUrl" target="blank">
+                  <img
+                    [src]="imageList[3 * i + 1]?.imageUrl"
+                    alt="Lights"
+                    style="width: 100%"
+                  />
+                  <div class="caption">
+                    <p>{{ imageList[3 * i + 1].caption }}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="row" *ngIf="imageList[3 * i + 2]">
+              <div class="img-thumbnail">
+                <a [href]="imageList[3 * i + 2]?.imageUrl" target="blank">
+                  <img
+                    [src]="imageList[3 * i + 2]?.imageUrl"
+                    alt="Lights"
+                    style="width: 100%"
+                  />
+                  <div class="caption">
+                    <p>{{ imageList[3 * i + 2].caption }}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div> -->
+
+<div class="container">
+  <h2>Gallery with Angular <span>& Firebase</span></h2>
+  <div>
+    <button
+      
+     class = "btn btn-warning"
+      [routerLink]="['/gallery/image']"
+      routerLinkActive="router-link-active"
+    >
+      Add New Image
+    </button>
+  </div>
+
+  <div class="gallery" *ngIf="imageList">
+    <div class="gallery-item" *ngFor="let img of imageList; let i = index">
+      <img
+        class="gallery-image"
+        [src]="img?.imageUrl"
+        alt="person writing in a notebook beside by an iPad, laptop, printed photos, spectacles, and a cup of coffee on a saucer"
+      />
+    </div>
+  </div>
+</div>

@@ -31,13 +31,21 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'gallery',
+    loadChildren: () =>
+      import('./modules/image-gallery/gallery.module').then(
+        (m) => m.GalleryModule
+      ),
+      canActivate:[AuthGuard]
+  },
+  {
     path: '404',
     component: ErrorPageComponent,
   },
   {
     path: '**',
     redirectTo: '/404',
-    pathMatch:'full'
+    pathMatch: 'full',
   },
 ];
 

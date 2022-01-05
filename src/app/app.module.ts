@@ -29,6 +29,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { MaterialModule } from './modules/angular-material-module';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { HeaderComponent } from './components/header/header.component';
+import { GalleryModule } from './modules/image-gallery/gallery.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +51,7 @@ import { HeaderComponent } from './components/header/header.component';
     HttpClientModule,
     AppRoutingModule,
     UserModule,
+    GalleryModule,
     //firebase module
     AngularFireMessagingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
