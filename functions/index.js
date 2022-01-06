@@ -2,7 +2,12 @@ const functions = require("firebase-functions");
 
 // The Firebase Admin SDK to access Firestore.
 const admin = require("firebase-admin");
-admin.initializeApp(functions.config().firebase);
+var serviceAccount = require("./assets/service_account.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://ng-pwa-push-notification-default-rtdb.firebaseio.com",
+});
 
 // URL :- http://localhost:5001/ng-pwa-push-notification/us-central1/helloWorld
 exports.helloWorld = functions.https.onRequest((request, response) => {

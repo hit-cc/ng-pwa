@@ -30,6 +30,7 @@ import { MaterialModule } from './modules/angular-material-module';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { HeaderComponent } from './components/header/header.component';
 import { GalleryModule } from './modules/image-gallery/gallery.module';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,7 +60,7 @@ import { GalleryModule } from './modules/image-gallery/gallery.module';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-
+    NgHttpLoaderModule.forRoot(),
     ReactiveFormsModule,
     // angular material
     MaterialModule, // all module imported

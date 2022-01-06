@@ -61,8 +61,32 @@ We can create a script to shorten this process. Open a terminal and run npm run 
 create a prod build using ng build --prod and then deploy that distribution on the cloud.
 
 
-
-
 ## Push Notification - 28/12/2021
 
 reference link -  https://medium.com/mighty-ghost-hack/angular-8-firebase-cloud-messaging-push-notifications-cc80d9b36f82
+
+
+## firebase functions [CLOUD_FUNCTIONS](https://firebase.google.com/docs/functions)
+There are many triggers that you can use, such as:
+- Writes to Cloud Firestore
+- Uploads to Cloud Storage
+- New accounts in Firebase Authentication
+- Analytics conversion events
+- Crashlytics events
+- Incoming HTTPS requests
+
+## What are Cloud Functions?
+- Cloud Functions are a way to write your own serverless, event-driven backend.
+- Serverless means that you can use them to deploy your backend code without having to provision any servers.
+- Cloud Functions automatically scale based on the load, and they have strong security built-in. As a result, they offer a great development experience because you can focus on what matters: writing your backend code.
+
+## steps to config app
+[firebse function configuration steps](https://firebase.google.com/docs/functions/get-started)
+1) Install the Firebase CLI
+    - npm install -g firebase-tools
+2) Initialize a new Firebase project // or in your current project as you wish
+    - create folder functions or as you wish..
+    - login with firebase   :  command -> `firebase login`
+    - init firebase project :  command ->  `firebase init`   
+    - select Function option
+    - follow remaining option as per requirement and run project

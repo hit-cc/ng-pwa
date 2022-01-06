@@ -1,0 +1,14 @@
+
+- if you clone the project then you have to update frebase account details.
+- download service account private JSON file from firebase console and put in assets folder.
+- OR rename file with serivce_account.json or replace path in root index.js file.
+change your own details 
+
+var serviceAccount = require("./assets/service_account.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://<<your firebase project name>>-default-rtdb.firebaseio.com",
+});
+
+
+

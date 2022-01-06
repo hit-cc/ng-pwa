@@ -1,0 +1,19 @@
+
+/**
+ * Copy this environemnt varibales and replace with your credentials
+ * 
+ */
+ 
+export const environment = {
+ production: false,
+  firebaseConfig : {
+    apiKey: "--------",
+    authDomain: "------------",
+    projectId: "---------------",
+    storageBucket: "--------------------",
+    messagingSenderId: "--------------------",
+    appId: "--------------------",
+    measurementId: "--------------"
+  },
+  PUBLIC_VAPID_KEY:'---------------'
+}
