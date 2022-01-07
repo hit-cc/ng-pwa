@@ -1,33 +1,96 @@
+<div class="container-lg">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row">
+          <div class="col-sm-8">
+            <h2>Dummy Data<b></b></h2>
+          </div>
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID.</th>
+              <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+            </ng-container>
 
-<div class="main">
-  <table mat-table [dataSource]="dataSource" matSort>
-    <h1>User List</h1>
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>ID.</th>
-      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-    </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-    </ng-container>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+              <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+            </ng-container>
 
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-      <td mat-cell *matCellDef="let element">{{ element.email }}</td>
-    </ng-container>
+            <ng-container matColumnDef="website">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Website</th>
+              <td mat-cell *matCellDef="let element">{{ element.website }}</td>
+            </ng-container>
 
-    <ng-container matColumnDef="website">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Website</th>
-      <td mat-cell *matCellDef="let element">{{ element.website }}</td>
-    </ng-container>
+            <tr mat-header-row *matHeaderRowDef="col"></tr>
+            <tr mat-row *matRowDef="let row; columns: col"></tr>
+          </table>
 
-    <tr mat-header-row *matHeaderRowDef="col"></tr>
-    <tr mat-row *matRowDef="let row; columns: col"></tr>
-  </table>
+          <mat-paginator
+            [pageSizeOptions]="[7, 14, 28]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+<div class="container-lg">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row">
+          <div class="col-sm-8">
+            <h2>Users <b>Details</b></h2>
+          </div>
+          <div class="col-sm-4">
+            <!-- <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button> -->
+          </div>
+        </div>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <!--device_token: "eLzCWAeBfeFbNJWV-OtvkL:APA91bGmtC3PtZXbCXDw2wCfYd1iq1wiuLSkY5D_fiucy4t9TqiW3qAXMpfRT9rUPCKT-_xCnMdqsrSH8G76TAQZhewQt_V6aKqLDofKmZcaJFOwqN6khJvC90BeB9Vx4T3GOX4KDPz1"
+                        displayName: null
+                        email: "cc_test1@mailinator.com"
+                        emailVerified: true
+                        photoURL: null
+                        uid: "30UvalLPNGfR62inuI9Xjy24McL2"-->
+            <th class="text-center">#</th>
+            <th class="text-center">NAME</th>
+            <th class="text-center">EMAIL</th>
+            <th class="text-center">EMAIL VERIFIED</th>
+            <th class="text-center">UID</th>
+            <th class="text-center">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of _userData; let i = index">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">{{ user?.data?.displayName || "-" }}</td>
+            <td class="text-center">{{ user?.data?.email || "-" }}</td>
+            <td class="text-center">{{ user?.data?.emailVerified  }}</td>
+            <td class="text-center">{{ user?.data?.uid || "-" }}</td>
+            <td class="text-center">
+              <!-- <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a> -->
+              <a class="edit" title="Edit" data-toggle="tooltip"
+                ><i class="material-icons">&#xE254;</i></a
+              >
+              <a class="delete" title="Delete" data-toggle="tooltip"
+                ><i class="material-icons">&#xE872;</i></a
+              >
+            </td>
+          </tr>
 
-  <mat-paginator
-    [pageSizeOptions]="[7, 14, 28]"
-    showFirstLastButtons
-  ></mat-paginator>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

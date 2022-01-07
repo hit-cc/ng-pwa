@@ -1,7 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const db = admin.firestore();
-const { default: axios } = require("axios");
 const _collection_name = "users";
 
 exports.getUserList = functions.https.onRequest((req, res) => {
@@ -108,7 +107,7 @@ exports.login = functions.https.onRequest(async (req, res) => {
     const email = req.body.email;
     const pass = req.body.password;
     if (req.method !== "POST") {
-      res.status(400).send("Request method must be post");
+      res.status(400).send("Request method must be POST");
       return;
     }
 
@@ -134,7 +133,6 @@ exports.login = functions.https.onRequest(async (req, res) => {
 
     async function getCustomerToken(uiddata) {
       if (uiddata) {
-        console.log("uid::::::::::::::", uiddata);
         await admin
           .auth()
           .createCustomToken(uiddata.uid)
@@ -159,6 +157,67 @@ exports.login = functions.https.onRequest(async (req, res) => {
           message: "uid data not found !",
         });
       }
+    }
+  } catch (error) {
+    throw error;
+  }
+});
+
+exports.deleteUser = functions.https.onRequest(async (req, res) => {
+  try {
+    let _id = req.body.id;
+    if (req.method !== "DELETE") {
+      res.status(400).send("Request method must be DELETE");
+      return;
+    }
+    if (_id) {
+      res.status(200).send({ message: "Api Under Delelopment" });
+      return;
+    } else {
+      res.send({
+        error: "Id not found !",
+      });
+    }
+  } catch (error) {
+    throw error;
+  }
+});
+
+exports.updateUser = functions.https.onRequest(async (req, res) => {
+  try {
+    let _id = req.body.id;
+    if (req.method !== "POST") {
+      res.status(400).send("Request method must be post");
+      return;
+    }
+    if (_id) {
+      res.status(200).send({ message: "Api Under Delelopment" });
+      return;
+    } else {
+      res.send({
+        error: "id not found !",
+      });
+      return;
+    }
+  } catch (error) {
+    throw error;
+  }
+});
+
+exports.getUserById = functions.https.onRequest(async (req, res) => {
+  try {
+    let _id = req.query.id;
+    if (req.method !== "GET") {
+      res.status(400).send("Request method must be GET");
+    }
+    if (_id) {
+      res.status(200).send({ message: "Api Under Delelopment" });
+      return;
+    } else {
+      res.send({
+        error: "id not found !",
+      });
+      return;
     }
   } catch (error) {
     throw error;
