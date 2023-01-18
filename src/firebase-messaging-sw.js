@@ -8,6 +8,25 @@ importScripts(
 
 // Initialize the Firebase app in the service worker by passing in the
 // messagingSenderId.
+self.addEventListener('notificationclick', function (event) {
+  console.log("url", redirection_url);
+  event.waitUntil(
+    clients.matchAll({ type: 'window' }).then(windowClients => {
+      // Check if there is already a window/tab open with the target URL
+      for (var i = 0; i < windowClients.length; i++) {
+        var client = windowClients[i];
+        // If so, just focus it.
+        if (client.url === redirection_url && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // If not, then open the target URL in a new window/tab.
+      if (clients.openWindow) {
+        return clients.openWindow(redirection_url);
+      }
+    })
+  );
+})
 
 firebase.initializeApp({
   apiKey: "AIzaSyA808C8YZo7WNsvYfaGlvKCgKdHJEu1NZc",
@@ -19,42 +38,28 @@ firebase.initializeApp({
   measurementId: "G-VW63432CPN",
 });
 
-// Retrieve an instance of Firebase Messaging so that it can handle background
-// messages.
-const messaging = firebase.messaging();
+const messaging = firebase.messaging()
+let redirection_url = ""
 
-messaging.setBackgroundMessageHandler(function (payload) {
-  console.log("setBackgroundMessageHandler background message ", payload);
+messaging.onBackgroundMessage(function (payload) {
+  console.log('Received background message ', payload);
+  if (Object.keys(payload.fcmOptions).length === 0 && payload?.data?.click_actions) {
+    /**
+     * NOTE :- key 'click_actions' set from firebase console (Additional option key value);
+     * if we send notification from console then set same key
+     * */
 
-  const promiseChain = clients
-    .matchAll({
-      type: "window",
-      includeUncontrolled: true,
-    })
-    .then((windowClients) => {
-      for (let i = 0; i < windowClients.length; i++) {
-        const windowClient = windowClients[i];
-        windowClient.postMessage(payload);
-      }
-    })
-    .then(() => {
-      return self.registration.showNotification("my notification title");
-    });
-  return promiseChain;
-});
-
-self.addEventListener("push", function (event) {
-  console.log("event-->",event);
-  var data = event.data.json();
-  const title = data.Title;
-  data.Data.actions = data.Actions;
-  const options = {
-    body: data.Message,
-    data: data.Data,
-  };
-  event.waitUntil(self.registration.showNotification(title, options));
-});
-
-self.addEventListener("notificationclick", function (event) {});
-
-self.addEventListener("notificationclose", function (event) {});
+    redirection_url = payload?.data?.click_actions;
+  } else {
+    /**
+     * NOTE :- when we send notification from api call or with custome data then manage nortification object like belove
+     *  "notification": {
+        "body": "Test---",
+        "title": "New Notification ",
+        "click_action": "https://www.angular.io"
+        },
+     */
+    redirection_url = payload?.fcmOptions?.link;
+  }
+  console.log("redirection_url=>>", redirection_url);
+})
